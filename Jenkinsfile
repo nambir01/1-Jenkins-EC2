@@ -20,12 +20,8 @@ pipeline {
         }
         
         stage('Create Instance') {
-            environment {
-                AWS_DEFAULT_REGION = 'us-east-1'
-                AWS_ACCESS_KEY_ID = credentials('AKIA5WJWZMECCZBRQXE3')
-                AWS_SECRET_ACCESS_KEY = credentials('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')
-            }
             steps {
+                 withAWS(credentials: 'aws-cred')
                 sh "aws ec2 run-instances --image-id ${params.ami_id} --instance-type ${params.instance_type} --subnet-id ${params.subnet_id} --security-group-ids ${params.security_group_id} --tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value=hello-instance}]'"
             }
         }
