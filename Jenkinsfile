@@ -3,11 +3,11 @@ pipeline {
     
     parameters {
         string(name: 'instance_type', defaultValue: 't2.micro', description: 'EC2 instance type')
-        string(name: 'ami_id', defaultValue: 'your_ami_id', description: 'AMI ID for EC2 instance')
-        string(name: 'security_group_id', defaultValue: 'your_security_group_id', description: 'Security group ID for EC2 instance')
-        string(name: 'subnet_id', defaultValue: 'your_subnet_id', description: 'Subnet ID for EC2 instance')
-        string(name: 's3_bucket', defaultValue: 'your_s3_bucket', description: 'Name of S3 bucket containing image file')
-        string(name: 's3_key', defaultValue: 'your_s3_key', description: 'S3 key of image file')
+        string(name: 'ami_id', defaultValue: 'ami-0dfcb1ef8550277af', description: 'AMI ID for EC2 instance')
+        string(name: 'security_group_id', defaultValue: 'launch-wizard-1', description: 'Security group ID for EC2 instance')
+        string(name: 'subnet_id', defaultValue: 'subnet-0bd9344715e3897c0', description: 'Subnet ID for EC2 instance')
+        string(name: 's3_bucket', defaultValue: 'ec2-jenkins-001', description: 'Name of S3 bucket containing image file')
+        string(name: 's3_key', defaultValue: 'coffee.jpg', description: 'S3 key of image file')
     }
     
     stages {
@@ -27,9 +27,9 @@ pipeline {
         
         stage('Deploy') {
             environment {
-                AWS_DEFAULT_REGION = 'your_aws_region'
-                AWS_ACCESS_KEY_ID = credentials('aws-access-key')
-                AWS_SECRET_ACCESS_KEY = credentials('aws-secret-key')
+                AWS_DEFAULT_REGION = 'us-east-1'
+                AWS_ACCESS_KEY_ID = credentials('AKIA5WJWZMECCZBRQXE3')
+                AWS_SECRET_ACCESS_KEY = credentials('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')
             }
             steps {
                 sh 'pip install awscli'
@@ -45,10 +45,10 @@ pipeline {
             }
         }
         
-        stage('Cleanup') {
-            steps {
-                sh 'aws ec2 terminate-instances --instance-ids "$(cat instance-id.txt)"'
-            }
-        }
+        //stage('Cleanup') {
+        //    steps {
+        //        sh 'aws ec2 terminate-instances --instance-ids "$(cat instance-id.txt)"'
+        //    }
+        //}
     }
 }
