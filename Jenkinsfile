@@ -21,7 +21,12 @@ pipeline {
         
         stage('Create Instance') {
             steps {
-                withAWS(credentials: 'aws-cred') {
+                withCredentials([[
+	                $class: 'AmazonWebServices CredentialsBinding',
+	                credentialsId: 'aws-jenkins-demo',
+	                accessKeyVariable: 'AWS_ACCESS_KEY_ID',
+	                secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']])
+                {
                 sh "aws ec2 run-instances --image-id ${params.ami_id} --instance-type ${params.instance_type} --subnet-id ${params.subnet_id} --security-group-ids ${params.security_group_id} --tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value=hello-instance}]'"
                 }
             }
