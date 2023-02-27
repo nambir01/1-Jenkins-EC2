@@ -21,8 +21,9 @@ pipeline {
         
         stage('Create Instance') {
             steps {
-                 withAWS(credentials: 'aws-cred')
+                withAWS(credentials: 'aws-cred') {
                 sh "aws ec2 run-instances --image-id ${params.ami_id} --instance-type ${params.instance_type} --subnet-id ${params.subnet_id} --security-group-ids ${params.security_group_id} --tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value=hello-instance}]'"
+                }
             }
         }
         
