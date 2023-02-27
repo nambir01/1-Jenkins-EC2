@@ -20,17 +20,17 @@ pipeline {
         }
         
         stage('Create Instance') {
+            environment {
+                AWS_DEFAULT_REGION = 'us-east-1'
+                AWS_ACCESS_KEY_ID = credentials('AKIA5WJWZMECCZBRQXE3')
+                AWS_SECRET_ACCESS_KEY = credentials('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')
+            }
             steps {
                 sh "aws ec2 run-instances --image-id ${params.ami_id} --instance-type ${params.instance_type} --subnet-id ${params.subnet_id} --security-group-ids ${params.security_group_id} --tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value=hello-instance}]'"
             }
         }
         
         stage('Deploy') {
-            environment {
-                AWS_DEFAULT_REGION = 'us-east-1'
-                AWS_ACCESS_KEY_ID = credentials('AKIA5WJWZMECCZBRQXE3')
-                AWS_SECRET_ACCESS_KEY = credentials('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')
-            }
             steps {
                 sh 'pip install awscli'
                 sh 'aws ec2 describe-instances --filters "Name=tag:Name,Values=hello-instance" --query "Reservations[0].Instances[0].InstanceId" --output text > instance-id.txt'
