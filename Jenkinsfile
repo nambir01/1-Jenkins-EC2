@@ -42,7 +42,7 @@ pipeline {
 		{
                 sh 'pip install awscli'
                 sh 'aws ec2 describe-instances --filters "Name=tag:Name,Values=hello-instance" --query "Reservations[0].Instances[0].InstanceId" --output text > instance-id.txt'
-                sh "aws s3 cp s3://${params.s3_bucket}/${params.s3_key} image.jpg"
+                sh "aws s3 cp ${params.s3_bucket}/${params.s3_key} image.jpg"
                 sh 'aws s3 cp app.py .'
                 sh 'aws s3 cp templates/index.html templates/'
                 sh 'aws ec2 run-command --instance-ids "$(cat instance-id.txt)" --document-name "AWS-RunShellScript" --parameters "commands=[\\"pip install flask\\"]"'
