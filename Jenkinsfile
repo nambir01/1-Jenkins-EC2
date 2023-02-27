@@ -22,7 +22,7 @@ pipeline {
         stage('Create Instance') {
             steps {
                 withCredentials([[
-	                $class: 'AmazonWebServices CredentialsBinding',
+	                $class: 'AmazonWebServicesCredentialsBinding',
 	                credentialsId: 'aws-jenkins-demo',
 	                accessKeyVariable: 'AWS_ACCESS_KEY_ID',
 	                secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']])
