@@ -4,8 +4,8 @@ pipeline {
     parameters {
         string(name: 'instance_type', defaultValue: 't2.micro', description: 'EC2 instance type')
         string(name: 'ami_id', defaultValue: 'ami-0dfcb1ef8550277af', description: 'AMI ID for EC2 instance')
-        string(name: 'security_group_id', defaultValue: 'sg-0ce11929837aacbe3', description: 'Security group ID for EC2 instance')
-        string(name: 'subnet_id', defaultValue: 'subnet-0bd9344715e3897c0', description: 'Subnet ID for EC2 instance')
+        string(name: 'security_group_id', defaultValue: 'sg-06b5ddd3fd4dddeb5', description: 'Security group ID for EC2 instance')
+        string(name: 'subnet_id', defaultValue: 'subnet-0080869bb3e15b32b', description: 'Subnet ID for EC2 instance')
         string(name: 's3_bucket', defaultValue: 'ec2-jenkins-001', description: 'Name of S3 bucket containing image file')
         string(name: 's3_key', defaultValue: 'coffee.jpg', description: 'S3 key of image file')
     }
