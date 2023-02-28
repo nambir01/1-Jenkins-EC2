@@ -45,12 +45,12 @@ pipeline {
                 sh 'pip install awscli'
 		sh 'aws ec2 describe-instances --filters "Name=tag:Name,Values=hello-instance" --filters "Name=instance-state-name,Values=running" --query "Reservations[0].Instances[0].InstanceId" --output text > instance_id.txt'
 		sh 'pwd'
-		sh 'cat instance_id.txt'
+		sh 'cat /Users/slver/.jenkins/workspace/ec-aws-s3/instance_id.txt'
                 sh "aws s3 cp s3://${params.s3_bucket}/${params.s3_key} image.jpg"
                 sh "aws s3 cp s3://${params.s3_bucket}/app.py ."
                 sh "aws s3 cp s3://${params.s3_bucket}/template/index.html templates/"
-		sh 'aws ssm send-command --instance-ids $(cat instance-id.txt) --document-name "AWS-RunShellScript" --parameters "commands=[\\"pip install flask\\"]"'
-		sh "aws ssm send-command --instance-ids \"\$(cat instance-id.txt)\" --document-name \"AWS-RunShellScript\" --parameters \"commands=[\\\"FLASK_APP=app.py flask run --host 0.0.0.0 &\\\"]\""	
+		sh 'aws ssm send-command --instance-ids $(cat /Users/slver/.jenkins/workspace/ec-aws-s3/instance_id.txt) --document-name "AWS-RunShellScript" --parameters "commands=[\\"pip install flask\\"]"'
+		sh 'aws ssm send-command --instance-ids $(cat /Users/slver/.jenkins/workspace/ec-aws-s3/instance_id.txt) --document-name "AWS-RunShellScript" --parameters "commands=[\\"FLASK_APP=app.py flask run --host 0.0.0.0 &\\"]\"'	
                 sh 'sleep 10'
                 sh 'curl -o output.jpg http://localhost:5000/image'
                 sh 'curl -o output.html http://localhost:5000/'
