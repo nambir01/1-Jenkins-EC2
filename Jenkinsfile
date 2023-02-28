@@ -47,8 +47,8 @@ pipeline {
                 sh "aws s3 cp s3://${params.s3_bucket}/${params.s3_key} image.jpg"
                 sh "aws s3 cp s3://${params.s3_bucket}/app.py ."
                 sh "aws s3 cp s3://${params.s3_bucket}/template/index.html templates/"
-                sh ''aws ssm send-command --instance-ids "$(cat instance-id.txt)" --document-name "AWS-RunShellScript" --parameters "commands=[\\"pip install flask\\"]"''
-                sh ''aws ssm send-command --instance-ids "$(cat instance-id.txt)" --document-name "AWS-RunShellScript" --parameters "commands=[\\"FLASK_APP=app.py flask run --host 0.0.0.0 &\\"]"''
+                sh 'aws ssm send-command --instance-ids "$(cat instance-id.txt)" --document-name "AWS-RunShellScript" --parameters "commands=[\\"pip install flask\\"]"'
+                sh 'aws ssm send-command --instance-ids "$(cat instance-id.txt)" --document-name "AWS-RunShellScript" --parameters "commands=[\\"FLASK_APP=app.py flask run --host 0.0.0.0 &\\"]"'
                 sh 'sleep 10'
                 sh 'curl -o output.jpg http://localhost:5000/image'
                 sh 'curl -o output.html http://localhost:5000/'
