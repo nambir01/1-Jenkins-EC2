@@ -42,12 +42,12 @@ pipeline {
 	                accessKeyVariable: 'AWS_ACCESS_KEY_ID',
 	                secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']])
 		{
-                sh 'sleep 200'
+                sh 'sleep 20'
                 sh 'pip install awscli'
 		sh 'aws ec2 describe-instances --filters "Name=tag:Name,Values=hello-instance" --filters "Name=instance-state-name,Values=running" --query "Reservations[0].Instances[0].InstanceId" --output text > instance_id.txt'
 		sh 'pwd'
 		sh 'cat /Users/slver/.jenkins/workspace/ec-aws-s3/instance_id.txt'
-		sh 'aws ec2 associate-iam-instance-profile --instance-id $(cat /Users/slver/.jenkins/workspace/ec-aws-s3/instance_id.txt) --iam-instance-profile Name=${params.INSTANCE_PROFILE_NAME}'
+		sh "aws ec2 associate-iam-instance-profile --instance-id $(cat /Users/slver/.jenkins/workspace/ec-aws-s3/instance_id.txt) --iam-instance-profile Name=${params.INSTANCE_PROFILE_NAME}"
                 sh "aws s3 cp s3://${params.s3_bucket}/${params.s3_key} image.jpg"
                 sh "aws s3 cp s3://${params.s3_bucket}/app.py ."
                 sh "aws s3 cp s3://${params.s3_bucket}/template/index.html templates/"
