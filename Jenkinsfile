@@ -40,6 +40,7 @@ pipeline {
 	                accessKeyVariable: 'AWS_ACCESS_KEY_ID',
 	                secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']])
 		{
+                sh 'sleep 10'
                 sh 'pip install awscli'
                 sh 'aws ec2 describe-instances --filters "Name=tag:Name,Values=hello-instance" --query "Reservations[0].Instances[0].InstanceId" --output text > instance-id.txt'
                 sh "aws s3 cp s3://${params.s3_bucket}/${params.s3_key} image.jpg"
