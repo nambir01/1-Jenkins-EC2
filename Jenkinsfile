@@ -29,7 +29,10 @@ pipeline {
 	                secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']])
                 {
                 sh "aws ec2 run-instances --image-id ${params.ami_id} --instance-type ${params.instance_type} --subnet-id ${params.subnet_id} --security-group-ids ${params.security_group_id} --tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value=hello-instance}]'"
-                sh 'sleep 20'
+                sh 'sleep 50'
+		sh 'pip install awscli'
+		sh 'aws ec2 describe-instances --filters "Name=tag:Name,Values=hello-instance" --filters "Name=instance-state-name,Values=running" --query "Reservations[0].Instances[0].InstanceId" --output text > instance_id.txt'
+		sh 'aws ec2 associate-iam-instance-profile --instance-id $(cat /Users/slver/.jenkins/workspace/ec-aws-s3/instance_id.txt) --iam-instance-profile Name=$INSTANCE_PROFILE_NAME'
                 }
             }
         }
@@ -42,17 +45,12 @@ pipeline {
 	                accessKeyVariable: 'AWS_ACCESS_KEY_ID',
 	                secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']])
 		{
-                sh 'sleep 20'
-                sh 'pip install awscli'
-		sh 'aws ec2 describe-instances --filters "Name=tag:Name,Values=hello-instance" --filters "Name=instance-state-name,Values=running" --query "Reservations[0].Instances[0].InstanceId" --output text > instance_id.txt'
-		sh 'pwd'
-		sh 'cat /Users/slver/.jenkins/workspace/ec-aws-s3/instance_id.txt'
-		sh 'aws ec2 associate-iam-instance-profile --instance-id $(cat /Users/slver/.jenkins/workspace/ec-aws-s3/instance_id.txt) --iam-instance-profile Name=$INSTANCE_PROFILE_NAME'
+                sh 'sleep 200'
                 sh "aws s3 cp s3://${params.s3_bucket}/${params.s3_key} image.jpg"
                 sh "aws s3 cp s3://${params.s3_bucket}/app.py ."
                 sh "aws s3 cp s3://${params.s3_bucket}/template/index.html templates/"
 		sh 'aws ssm send-command --instance-ids $(cat /Users/slver/.jenkins/workspace/ec-aws-s3/instance_id.txt) --document-name "AWS-RunShellScript" --parameters "commands=[\\"sudo yum install -y python3-pip\\"]"'
-		sh 'aws ssm send-command --instance-ids $(cat /Users/slver/.jenkins/workspace/ec-aws-s3/instance_id.txt) --document-name "AWS-RunShellScript" --parameters "commands=[\\"pip install flask\\"]"'
+		sh 'aws ssm send-command --instance-ids $(cat /Users/slver/.jenkins/workspace/ec-aws-s3/instance_id.txt) --document-name "AWS-RunShellScript" --parameters "commands=[\\"pip3 install flask\\"]"'
 		sh 'aws ssm send-command --instance-ids $(cat /Users/slver/.jenkins/workspace/ec-aws-s3/instance_id.txt) --document-name "AWS-RunShellScript" --parameters "commands=[\\"FLASK_APP=app.py flask run --host 0.0.0.0 &\\"]\"'	
                 sh 'sleep 10'
                 sh 'curl -o output.jpg http://localhost:5000/image'
