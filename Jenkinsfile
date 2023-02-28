@@ -43,7 +43,7 @@ pipeline {
 		{
                 sh 'sleep 20'
                 sh 'pip install awscli'
-                sh 'aws ec2 describe-instances --filters "Name=tag:Name,Values=hello-instance" --query "Name=instance-state-name,Values=running" "Reservations[0].Instances[0].InstanceId" --output text > instance-id.txt'
+                sh 'aws ec2 describe-instances --filters "Name=tag:Name,Values=hello-instance" --filters "Name=instance-state-name,Values=running" --query "Reservations[0].Instances[0].InstanceId" --output text > instance_id.txt'
                 sh "aws s3 cp s3://${params.s3_bucket}/${params.s3_key} image.jpg"
                 sh "aws s3 cp s3://${params.s3_bucket}/app.py ."
                 sh "aws s3 cp s3://${params.s3_bucket}/template/index.html templates/"
