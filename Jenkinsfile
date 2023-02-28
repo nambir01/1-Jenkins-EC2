@@ -41,7 +41,7 @@ pipeline {
 	                accessKeyVariable: 'AWS_ACCESS_KEY_ID',
 	                secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']])
 		{
-                sh 'sleep 20'
+                sh 'sleep 200'
                 sh 'pip install awscli'
 		sh 'aws ec2 describe-instances --filters "Name=tag:Name,Values=hello-instance" --filters "Name=instance-state-name,Values=running" --query "Reservations[0].Instances[0].InstanceId" --output text > instance_id.txt'
 		sh 'pwd'
