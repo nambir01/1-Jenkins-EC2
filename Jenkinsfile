@@ -46,8 +46,8 @@ pipeline {
 	                secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']])
 		{
                 sh 'sleep 300'
-		sh 'aws ssm send-command --instance-ids $(cat /Users/slver/.jenkins/workspace/ec-aws-s3/instance_id.txt) --document-name "AWS-RunShellScript" --parameters \'{"commands":["mkdir app"]}\''
-		sh 'aws ssm send-command --instance-ids $(cat /Users/slver/.jenkins/workspace/ec-aws-s3/instance_id.txt) --document-name "AWS-RunShellScript" --parameters \'{"commands":["cd app"]}\''
+		//sh 'aws ssm send-command --instance-ids $(cat /Users/slver/.jenkins/workspace/ec-aws-s3/instance_id.txt) --document-name "AWS-RunShellScript" --parameters \'{"commands":["mkdir app"]}\''
+		//sh 'aws ssm send-command --instance-ids $(cat /Users/slver/.jenkins/workspace/ec-aws-s3/instance_id.txt) --document-name "AWS-RunShellScript" --parameters \'{"commands":["cd app"]}\''
                 sh "aws s3 cp s3://${params.s3_bucket}/${params.s3_key} image.jpg"
                 sh "aws s3 cp s3://${params.s3_bucket}/app.py ."
                 sh "aws s3 cp s3://${params.s3_bucket}/template/index.html templates/"
