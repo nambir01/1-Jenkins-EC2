@@ -20,3 +20,4 @@
 * Create user in AWS and create Access Key, create new credentials in jenkins and provide the Access Key and Secret Key.  
 * Make sure to create role and attach it to the jenkins user to run SSM commands from Jenkins Script.  
 * Create role for 'SSM Managed Core' and attach it to the EC2 instance (Pass it via Parameters)
+* Sleep is added so that the instance to be added as part of SSM managed instance, only then instance can execute shell commands from Jenkins.
