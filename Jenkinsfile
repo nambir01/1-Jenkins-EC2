@@ -31,7 +31,6 @@ pipeline {
 		//*** below command will create an ec2 instance with paramter values passed from top or from Jenkins job
                 sh "aws ec2 run-instances --image-id ${params.ami_id} --instance-type ${params.instance_type} --subnet-id ${params.subnet_id} --security-group-ids ${params.security_group_id} --tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value=hello-instance}]'"
                 sh 'sleep 50'
-		sh 'pwd'
 		sh 'pip install awscli'
 		//*** below statment will extract the instance id of the running instance in the name of hello-instance
 		sh 'aws ec2 describe-instances --filters "Name=tag:Name,Values=hello-instance" --filters "Name=instance-state-name,Values=running" --query "Reservations[0].Instances[0].InstanceId" --output text > instance_id.txt'
