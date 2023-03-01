@@ -36,7 +36,7 @@ pipeline {
 		//*** below statment will extract the instance id of the running instance in the name of hello-instance
 		sh 'aws ec2 describe-instances --filters "Name=tag:Name,Values=hello-instance" --filters "Name=instance-state-name,Values=running" --query "Reservations[0].Instances[0].InstanceId" --output text > instance_id.txt'
 		//*** below statment will attach an IAM role to the instance
-		sh 'aws ec2 associate-iam-instance-profile --instance-id $(cat /Users/slver/.jenkins/workspace/aws-ec2-s3-pipeline/instance_id.txt) --iam-instance-profile Name=$INSTANCE_PROFILE_NAME'
+		sh 'aws ec2 associate-iam-instance-profile --instance-id $(cat /Users/slver/.jenkins/workspace/aws-ec2-s3-pipeline@2/instance_id.txt) --iam-instance-profile Name=$INSTANCE_PROFILE_NAME'
                 }
             }
         }
@@ -50,28 +50,28 @@ pipeline {
 	                secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']])
 		{
                 sh 'sleep 300'
-		sh 'aws ssm send-command --instance-ids $(cat /Users/slver/.jenkins/workspace/aws-ec2-s3-pipeline/instance_id.txt) --document-name "AWS-RunShellScript" --parameters commands=["mkdir templates"]'
+		sh 'aws ssm send-command --instance-ids $(cat /Users/slver/.jenkins/workspace/aws-ec2-s3-pipeline@2/instance_id.txt) --document-name "AWS-RunShellScript" --parameters commands=["mkdir templates"]'
 		sh 'sleep 10'
-		sh "aws ssm send-command --instance-ids \$(cat /Users/slver/.jenkins/workspace/aws-ec2-s3-pipeline/instance_id.txt) --document-name \"AWS-RunShellScript\" --parameters 'commands=[\"aws s3 cp s3://${params.s3_bucket}/${params.s3_key} image.jpg\"]'"
-		sh 'aws ssm send-command --instance-ids $(cat /Users/slver/.jenkins/workspace/aws-ec2-s3-pipeline/instance_id.txt) --document-name "AWS-RunShellScript" --parameters commands=["pwd"]'
+		sh "aws ssm send-command --instance-ids \$(cat /Users/slver/.jenkins/workspace/aws-ec2-s3-pipeline@2/instance_id.txt) --document-name \"AWS-RunShellScript\" --parameters 'commands=[\"aws s3 cp s3://${params.s3_bucket}/${params.s3_key} image.jpg\"]'"
+		sh 'aws ssm send-command --instance-ids $(cat /Users/slver/.jenkins/workspace/aws-ec2-s3-pipeline@2/instance_id.txt) --document-name "AWS-RunShellScript" --parameters commands=["pwd"]'
 		sh 'sleep 10'
-		sh "aws ssm send-command --instance-ids \$(cat /Users/slver/.jenkins/workspace/aws-ec2-s3-pipeline/instance_id.txt) --document-name \"AWS-RunShellScript\" --parameters \"commands=[\\\"aws s3 cp s3://${params.s3_bucket}/app.py .\\\"]\""
+		sh "aws ssm send-command --instance-ids \$(cat /Users/slver/.jenkins/workspace/aws-ec2-s3-pipeline@2/instance_id.txt) --document-name \"AWS-RunShellScript\" --parameters \"commands=[\\\"aws s3 cp s3://${params.s3_bucket}/app.py .\\\"]\""
 		sh 'sleep 10'
-		sh "aws ssm send-command --instance-ids \$(cat /Users/slver/.jenkins/workspace/aws-ec2-s3-pipeline/instance_id.txt) --document-name \"AWS-RunShellScript\" --parameters \"commands=[\\\"aws s3 cp s3://${params.s3_bucket}/templates/index.html templates\\\"]\""
+		sh "aws ssm send-command --instance-ids \$(cat /Users/slver/.jenkins/workspace/aws-ec2-s3-pipeline@2/instance_id.txt) --document-name \"AWS-RunShellScript\" --parameters \"commands=[\\\"aws s3 cp s3://${params.s3_bucket}/templates/index.html templates\\\"]\""
 		sh 'sleep 10'
 
 //                sh "aws s3 cp s3://${params.s3_bucket}/${params.s3_key} image.jpg"
 //                sh "aws s3 cp s3://${params.s3_bucket}/app.py ."
 //                sh "aws s3 cp s3://${params.s3_bucket}/template/index.html templates/"
-		sh 'aws ssm send-command --instance-ids $(cat /Users/slver/.jenkins/workspace/aws-ec2-s3-pipeline/instance_id.txt) --document-name "AWS-RunShellScript" --parameters "commands=[\\"sudo yum install -y python3-pip\\"]"'
+		sh 'aws ssm send-command --instance-ids $(cat /Users/slver/.jenkins/workspace/aws-ec2-s3-pipeline@2/instance_id.txt) --document-name "AWS-RunShellScript" --parameters "commands=[\\"sudo yum install -y python3-pip\\"]"'
 		sh 'sleep 30'
-		sh 'aws ssm send-command --instance-ids $(cat /Users/slver/.jenkins/workspace/aws-ec2-s3-pipeline/instance_id.txt) --document-name "AWS-RunShellScript" --parameters "commands=[\\"pip3 install flask\\"]"'
+		sh 'aws ssm send-command --instance-ids $(cat /Users/slver/.jenkins/workspace/aws-ec2-s3-pipeline@2/instance_id.txt) --document-name "AWS-RunShellScript" --parameters "commands=[\\"pip3 install flask\\"]"'
 		sh 'sleep 30'
-		sh 'aws ssm send-command --instance-ids $(cat /Users/slver/.jenkins/workspace/aws-ec2-s3-pipeline/instance_id.txt) --document-name "AWS-RunShellScript" --parameters "commands=[\\"pip3 install boto3\\"]"'
+		sh 'aws ssm send-command --instance-ids $(cat /Users/slver/.jenkins/workspace/aws-ec2-s3-pipeline@2/instance_id.txt) --document-name "AWS-RunShellScript" --parameters "commands=[\\"pip3 install boto3\\"]"'
 		sh 'sleep 30'
-                sh 'aws ssm send-command --instance-ids $(cat /Users/slver/.jenkins/workspace/aws-ec2-s3-pipeline/instance_id.txt) --document-name "AWS-RunShellScript" --parameters "commands=[\\"export FLASK_APP=app.py\\"]"'
+                sh 'aws ssm send-command --instance-ids $(cat /Users/slver/.jenkins/workspace/aws-ec2-s3-pipeline@2/instance_id.txt) --document-name "AWS-RunShellScript" --parameters "commands=[\\"export FLASK_APP=app.py\\"]"'
 		sh 'sleep 30'
-		sh 'aws ssm send-command --instance-ids $(cat /Users/slver/.jenkins/workspace/aws-ec2-s3-pipeline/instance_id.txt) --document-name "AWS-RunShellScript" --parameters "commands=[\\"flask run --host 0.0.0.0 &\\"]\"'
+		sh 'aws ssm send-command --instance-ids $(cat /Users/slver/.jenkins/workspace/aws-ec2-s3-pipeline@2/instance_id.txt) --document-name "AWS-RunShellScript" --parameters "commands=[\\"flask run --host 0.0.0.0 &\\"]\"'
                 sh 'sleep 30'
                 sh 'curl -o output.jpg http://localhost:5000/image'
                 sh 'curl -o output.html http://localhost:5000/'
