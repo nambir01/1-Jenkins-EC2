@@ -24,8 +24,8 @@ pipeline {
                 withCredentials([[
 	                $class: 'AmazonWebServicesCredentialsBinding',
 	                credentialsId: 'aws-cred',
-	                accessKeyVariable: 'AWS_ACCESS_KEY_ID',
-	                secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']])
+	                accessKeyVariable: 'AKIA5G4DGGRBASO4TZXS',
+	                secretKeyVariable: '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']])
                 {
 		//*** below command will create an ec2 instance with paramter values passed from top or from Jenkins job
                 sh "aws ec2 run-instances --image-id ${params.ami_id} --instance-type ${params.instance_type} --subnet-id ${params.subnet_id} --security-group-ids ${params.security_group_id} --tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value=hello-instance}]'"
@@ -44,8 +44,8 @@ pipeline {
 		withCredentials([[
 	                $class: 'AmazonWebServicesCredentialsBinding',
 	                credentialsId: 'aws-cred',
-	                accessKeyVariable: 'AWS_ACCESS_KEY_ID',
-	                secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']])
+	                accessKeyVariable: 'AKIA5G4DGGRBASO4TZXS',
+	                secretKeyVariable: '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']])
 		{
                 sh 'sleep 300'
 		sh 'aws ssm send-command --instance-ids $(cat /Users/slver/.jenkins/workspace/aws-ec2-s3-pipeline@2/instance_id.txt) --document-name "AWS-RunShellScript" --parameters commands=["mkdir templates"]'
