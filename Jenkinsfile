@@ -4,10 +4,9 @@ pipeline {
     parameters {
         string(name: 'instance_type', defaultValue: 't2.micro', description: 'EC2 instance type')
         string(name: 'ami_id', defaultValue: 'ami-0dfcb1ef8550277af', description: 'AMI ID for EC2 instance')
-        string(name: 'security_group_id', defaultValue: 'sg-06b5ddd3fd4dddeb5', description: 'Security group ID for EC2 instance')
-        string(name: 'subnet_id', defaultValue: 'subnet-0080869bb3e15b32b', description: 'Subnet ID for EC2 instance')
+        string(name: 'security_group_id', defaultValue: 'sg-01d27b50da72da9bd', description: 'Security group ID for EC2 instance')
         string(name: 'INSTANCE_PROFILE_NAME', defaultValue: 'EC2-SSMCore', description: 'Name of the IAM instance profile to associate with the EC2 instance')
-        string(name: 's3_bucket', defaultValue: 'ec2-insta-001', description: 'Name of S3 bucket containing image file')
+        string(name: 's3_bucket', defaultValue: 'ec2-insta-001', description: 'jenkins-ec2')
         string(name: 's3_key', defaultValue: 'coffee.jpg', description: 'S3 key of image file')
     }
     
