@@ -15,7 +15,7 @@ pipeline {
             steps {
                 sh 'pip install boto3'
                 sh 'pip install flask'
-                sh 'python -m compileall app.py'
+                sh 'python3 -m compileall app.py'
             }
         }
         
