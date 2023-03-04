@@ -8,6 +8,7 @@ pipeline {
         string(name: 'INSTANCE_PROFILE_NAME', defaultValue: 'EC2-SSMCore', description: 'Name of the IAM instance profile to associate with the EC2 instance')
         string(name: 's3_bucket', defaultValue: 'ec2-insta-001', description: 'jenkins-ec2')
         string(name: 's3_key', defaultValue: 'coffee.jpg', description: 'S3 key of image file')
+	string(name: 'region', defaultValue: 'us-east-1', description: 'Region of instance')
     }
     
     stages {
@@ -28,7 +29,7 @@ pipeline {
 	                secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']])
                 {
 		//*** below command will create an ec2 instance with paramter values passed from top or from Jenkins job
-                sh "aws ec2 run-instances --image-id ${params.ami_id} --instance-type ${params.instance_type} --subnet-id ${params.subnet_id} --security-group-ids ${params.security_group_id} --tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value=hello-instance}]'"
+                sh "aws ec2 run-instances --image-id ${params.ami_id} --instance-type ${params.instance_type} --security-group-ids ${params.security_group_id} --region ${params.region} --tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value=hello-instance}]'"
                 sh 'sleep 50'
 		sh 'pip install awscli'
 		//*** below statment will extract the instance id of the running instance in the name of hello-instance
