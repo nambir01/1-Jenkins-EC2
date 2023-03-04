@@ -34,6 +34,7 @@ pipeline {
 		//*** below statment will extract the instance id of the running instance in the name of hello-instance
 		sh 'aws ec2 describe-instances --filters "Name=tag:Name,Values=hello-instance" --filters "Name=instance-state-name,Values=running" --query "Reservations[0].Instances[0].InstanceId" --output text > instance_id.txt'
 		//*** below statment will attach an IAM role to the instance
+		sh 'pwd'	
 		sh 'aws ec2 associate-iam-instance-profile --instance-id $(cat /Users/slver/.jenkins/workspace/aws-ec2-s3-pipeline@2/instance_id.txt) --iam-instance-profile Name=$INSTANCE_PROFILE_NAME'
                 }
             }
